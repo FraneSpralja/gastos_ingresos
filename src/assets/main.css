@@ -1,0 +1,8 @@
+div#app {
+    width: 70%;
+    margin: auto;
+}
+
+.this-week {
+    background-color: red;
+}
