@@ -1,29 +1,11 @@
 # Gasto_Ingreso_vue
 
-This template should help get you started developing with Vue 3 in Vite.
+This project is thinked to strong up my skills on "vue-router" and js logic.
 
-## Recommended IDE Setup
+# Original idea
+The initial idea is build and app web to take control of incomes and expenses. To build this up I have to:
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+1) Identify day, week and month;
+2) Get the incomes and expenses;
+3) Build a visual representation of the incomes and expenses;
+4) I should could see my incomes and expenses story;
