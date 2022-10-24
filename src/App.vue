@@ -29,12 +29,14 @@ const getNewDay = () => {
     case 6:
       newDay.value = 'Sa';
       break;
-    case 7:
+    case 0:
       newDay.value = 'Do';
       break;
     default:
       newDay.value = '';
   }
+
+  console.log(new Date().getDay())
 }
 
 const meses = () => {
@@ -82,6 +84,15 @@ const meses = () => {
     }
 }
 
+const getData = async() => {
+  const week = Math.ceil(new Date().getDate() / 7);
+
+  const res = await fetch(`http://localhost:3000/${week}`);
+  const data = await res.json();
+
+  console.log(data)
+}
+
 const actualDay = computed(() => {
   return new Date().toLocaleDateString()
 })
@@ -94,6 +105,8 @@ onMounted(() => {
   getNewDay();
   meses();
 })
+
+getData();
 
 </script>
 
