@@ -2,10 +2,28 @@
 import { computed, onMounted, onUpdated, ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 
+import axios from 'axios'
+
 import BtnSemanaMes from './components/BtnSemanaMes.vue';
 
 const newDay = ref('');
+const week = ref('');
 const nameMes = ref('');
+const gastos = ref([]);
+const ingresos = ref([]);
+const totalData = ref([])
+
+const getTotalData = async () => {
+  const dataUno = await axios.get('http://localhost:3000/1');
+  const dataDos = await axios.get('http://localhost:3000/2');
+  const dataTres = await axios.get('http://localhost:3000/3');
+  const dataCuatro = await axios.get('http://localhost:3000/4');
+
+  totalData.value.push(dataUno.data)
+  totalData.value.push(dataDos.data)
+  totalData.value.push(dataTres.data)
+  totalData.value.push(dataCuatro.data)
+}
 
 const getNewDay = () => {
   const day = new Date().getDay();
@@ -35,8 +53,6 @@ const getNewDay = () => {
     default:
       newDay.value = '';
   }
-
-  console.log(new Date().getDay())
 }
 
 const meses = () => {
@@ -84,36 +100,44 @@ const meses = () => {
     }
 }
 
-const getData = async() => {
-  const week = Math.ceil(new Date().getDate() / 7);
+const actualWeek = () => {
+  week.value = Math.ceil(new Date().getDate() / 7);
+} 
+
+const getData = async(week) => {
 
   const res = await fetch(`http://localhost:3000/${week}`);
   const data = await res.json();
 
-  console.log(data)
+  for(let valor in data) {
+    const newValor = data[valor];
+    for(let i = 0; i < newValor.length; i++){
+      gastos.value.push(newValor[i].gasto)
+      ingresos.value.push(newValor[i].ingreso)
+    }
+  }
 }
 
 const actualDay = computed(() => {
   return new Date().toLocaleDateString()
 })
 
-const actualWeek = computed(() => {
-  return Math.ceil(new Date().getDate() / 7)
-})
+getTotalData()
 
 onMounted(() => {
   getNewDay();
   meses();
+  actualWeek();
+  getData(week.value);
 })
 
-getData();
 
 </script>
 
 <template>
   <div class="actual-day">
     <span
-    >{{newDay}} - {{actualDay}} - week: {{actualWeek}}</span>
+    >{{newDay}} - {{actualDay}} - week: {{week}}</span>
   </div>
   <div class="semana-mes_btns">
         <div class="btn-semanas">
@@ -134,10 +158,16 @@ getData();
             <BtnSemanaMes
             :name="nameMes"
             />
+          </div>
         </div>
-    </div>
-
-  <RouterView />
+        <div>
+          <RouterView 
+          :week="week"
+          :ingresos="ingresos"
+          :gastos="gastos"
+          :totalData="totalData"
+          />
+        </div>
 </template>
 
 <style scoped>
